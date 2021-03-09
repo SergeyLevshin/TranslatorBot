@@ -38,6 +38,7 @@ public class YandexTranslator implements Translator{
           A Request body should be like this, according to Yandex Translation API documentation
           {
               "folder_id": "b1gvmob95yysaplct532",
+              "format": "string",
               "texts": ["Hello", "World"],
               "targetLanguageCode": "ru"
           }
