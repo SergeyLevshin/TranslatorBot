@@ -26,7 +26,7 @@ public class YandexTranslator implements Translator{
     @Override
     public String getTranslation(String text) {
 
-        // Now primary translation directions: Any Language -> Russian, Russian -> English
+        // Now a primary translation directions: Any Language -> Russian, Russian -> English
         String targetLanguageCode = "";
         if (getCurrentLanguageCode(text).equals("ru")) {
             targetLanguageCode = "en";
@@ -35,13 +35,13 @@ public class YandexTranslator implements Translator{
         }
 
         /*
-          Request body should be like this, according to Yandex Translation API documentation
+          A Request body should be like this, according to Yandex Translation API documentation
           {
               "folder_id": "b1gvmob95yysaplct532",
               "texts": ["Hello", "World"],
               "targetLanguageCode": "ru"
           }
-          but I use only one String in translation, so I don't need to send array of String
+          but I use only one String in translation, so I don't need to send an array of Strings
         */
         Map<String, String> parameters = new HashMap<>();
         parameters.put("targetLanguageCode", targetLanguageCode);
