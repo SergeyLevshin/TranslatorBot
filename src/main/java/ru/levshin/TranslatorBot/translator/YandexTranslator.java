@@ -35,13 +35,13 @@ public class YandexTranslator implements Translator{
         }
 
         /*
-          Request body should be like this according to Yandex Translation API documentation
+          Request body should be like this, according to Yandex Translation API documentation
           {
               "folder_id": "b1gvmob95yysaplct532",
               "texts": ["Hello", "World"],
               "targetLanguageCode": "ru"
           }
-          but i use only ne String in translation, so i don't need to send array of String
+          but i use only one String in translation, so i don't need to send array of String
         */
         Map<String, String> parameters = new HashMap<>();
         parameters.put("targetLanguageCode", targetLanguageCode);
