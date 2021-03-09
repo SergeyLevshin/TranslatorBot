@@ -41,7 +41,7 @@ public class YandexTranslator implements Translator{
               "texts": ["Hello", "World"],
               "targetLanguageCode": "ru"
           }
-          but i use only one String in translation, so i don't need to send array of String
+          but I use only one String in translation, so I don't need to send array of String
         */
         Map<String, String> parameters = new HashMap<>();
         parameters.put("targetLanguageCode", targetLanguageCode);
