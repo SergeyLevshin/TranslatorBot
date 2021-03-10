@@ -15,13 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class YandexTranslator implements Translator{
+public class YandexTranslator implements Translator {
 
     //todo get token automatically, because it expires in every 12 hours
 
     // Token for authorization in Yandex Cloud API
     @Value("${yandex.iam_token}")
     private String token;
+    @Value( "${folder.id}")
+    private String folderId;
 
     @Override
     public String getTranslation(String text) {
@@ -42,34 +44,37 @@ public class YandexTranslator implements Translator{
               "texts": ["Hello", "World"],
               "targetLanguageCode": "ru"
           }
-          but I use only one String in translation, so I don't need to send an array of Strings
+          but I use only single String in translation, so I don't need to send an array of Strings
         */
         Map<String, String> parameters = new HashMap<>();
         parameters.put("targetLanguageCode", targetLanguageCode);
         parameters.put("format", "PLAIN_TEXT");
         parameters.put("texts", text);
-        parameters.put("folder_id", "b1gfdaa0q358cduv9tb8");
+        parameters.put("folder_id", folderId);
 
         String json = getJsonString(parameters);
 
         JSONObject jsonObject = getJsonResponseObject(json, "https://translate.api.cloud.yandex.net/translate/v2/translate");
 
-        String translatedText = jsonObject.optString("translations");
-
-        //todo replace this kludge by smart json parsing
-        translatedText = translatedText
-                .substring(2, translatedText.length() - 2)
-                .split(",")[0]
-                .split(":")[1];
-        translatedText = translatedText.substring(1, translatedText.length() - 1);
-
-        return translatedText;
+        /*
+            JSONObject will be received in this format
+        {
+            "translations": [
+            {
+              "text": "string",
+              "detectedLanguageCode": "string"
+            }
+          ]
+        }
+         */
+        return jsonObject.getJSONArray("translations")
+                .getJSONObject(0).getString("text");
     }
 
     private String getCurrentLanguageCode(String text) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("text", text);
-        parameters.put("folderId", "b1gfdaa0q358cduv9tb8");
+        parameters.put("folderId", folderId);
 
         String json = getJsonString(parameters);
 

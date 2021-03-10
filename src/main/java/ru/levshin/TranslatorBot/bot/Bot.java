@@ -1,7 +1,8 @@
 package ru.levshin.TranslatorBot.bot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,9 +12,12 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.levshin.TranslatorBot.translator.Translator;
 
+import java.util.Arrays;
+
 @Component
-@PropertySource("classpath:application.properties")
 public class Bot extends TelegramLongPollingBot {
+
+    private static final Logger logger = LoggerFactory.getLogger(TelegramLongPollingBot.class);
 
     @Value("${bot.name}")
     private String BOT_NAME;
@@ -60,9 +64,9 @@ public class Bot extends TelegramLongPollingBot {
         answer.setChatId(chatId.toString());
         try {
             execute(answer);
-            //todo возможно, логируем ответ или нет
+            logger.info("User: " + userName + " Translation: " + answer.getText());
         } catch (TelegramApiException e) {
-            //todo логируем сбой Telegram Bot API, используя userName
+            logger.info("User: " + userName + " " + Arrays.toString(e.getStackTrace()));
         }
     }
 }
